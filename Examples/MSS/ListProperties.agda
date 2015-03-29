@@ -10,7 +10,7 @@ open import AlgebraicReasoning.Equality
 open import AlgebraicReasoning.ExtensionalEquality
   using (_≐_; ≐-begin_; _≐⟨_⟩_; _≐∎; ≐-refl; ≐-sym)
 
-foldr-universal : ∀ {A B} (h : List A → B) f e →
+foldr-universal : {A B : Set} (h : List A → B) (f : A → B → B) (e : B) →
   (h [] ≡ e) → (∀ x xs → h (x ∷ xs) ≡ f x (h xs)) →
     h ≐ foldr f e 
 foldr-universal h f e base step [] = base
@@ -25,7 +25,7 @@ foldr-universal h f e base step (x ∷ xs) =
       foldr f e (x ∷ xs)
   ≡∎
 
-foldr-fusion : ∀ {A B C} (h : B → C) {f : A → B → B} 
+foldr-fusion : {A B C : Set} (h : B → C) {f : A → B → B} 
    {g : A → C → C} → {e : B} → 
    (∀ a → h ∘ f a ≐ g a ∘ h) →
        h ∘ foldr f e ≐ foldr g (h e)
